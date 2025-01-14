@@ -10,6 +10,7 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-COPY --from=build /app/target/DrComputer-0.0.1-SNAPSHOT.war drcomputer.war
+COPY --from=build /app/target/api_web_ban_hang-0.0.1-SNAPSHOT.war api_web_ban_hang.war
 EXPOSE 8080 
 
+ENTRYPOINT ["java","-jar","api_web_ban_hang.war"]

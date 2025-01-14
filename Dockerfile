@@ -1,17 +1,26 @@
+# Stage 1: Build
 FROM maven:3-openjdk-17 AS build
 WORKDIR /app
 
-COPY . .
+# Copy pom.xml and resolve dependencies (cache optimization)
+COPY pom.xml ./
+RUN mvn dependency:resolve
+
+# Copy source code
+COPY src ./src/
+
+# Build project
 RUN mvn clean package -DskipTests
 
-
-# Run stage
-
+# Stage 2: Run
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-COPY --from=build /app/target/api_web_ban_hang-0.0.1-SNAPSHOT.war app.war
+# Copy the WAR file from the build stage
+COPY --from=build /app/target/DrComputer-0.0.1-SNAPSHOT.war app.war
 
-EXPOSE 8080 
+# Expose application port
+EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","app.war"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.war"]

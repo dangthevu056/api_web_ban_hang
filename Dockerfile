@@ -5,6 +5,7 @@ WORKDIR /app
 # Copy pom.xml and resolve dependencies (cache optimization)
 COPY pom.xml ./
 RUN mvn dependency:resolve
+COPY lombok.config ./
 
 # Copy source code
 COPY src ./src/

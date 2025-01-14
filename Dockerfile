@@ -18,7 +18,7 @@ FROM openjdk:11-jdk-slim
 WORKDIR /app
 
 # Copy the WAR file from the build stage
-COPY --from=build /app/target/DrComputer-0.0.1-SNAPSHOT.war app.war
+COPY --from=build /app/target/api_web_ban_hang-0.0.1-SNAPSHOT.war app.war
 
 # Expose application port
 EXPOSE 8080

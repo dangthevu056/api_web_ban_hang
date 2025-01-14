@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM maven:3-openjdk-17 AS build
+FROM maven:3-openjdk-11 AS build
 WORKDIR /app
 
 # Copy pom.xml and resolve dependencies (cache optimization)
@@ -13,7 +13,7 @@ COPY src ./src/
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run
-FROM openjdk:17-jdk-slim
+FROM openjdk:11-jdk-slim
 WORKDIR /app
 
 # Copy the WAR file from the build stage

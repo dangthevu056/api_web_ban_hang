@@ -7,6 +7,8 @@ import com.example.api_web_ban_hang.models.entities.TypeProduct
 import com.example.api_web_ban_hang.repos.ImageProductRepository
 import com.example.api_web_ban_hang.repos.ProductRepository
 import com.example.api_web_ban_hang.repos.SizeProductRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -60,8 +62,13 @@ class ProductController(
 ) {
 
     @GetMapping("/api/admin/products")
-    fun getProducts(): List<ProductDTO> {
-        return productRepository.findAll().map { product ->
+    fun getProducts(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): Page<ProductDTO> {
+        val pageable = PageRequest.of(page, size)
+        val productsPage = productRepository.findAll(pageable)
+        return productsPage.map { product ->
             ProductDTO(
                 id = product.id,
                 name = product.nameProduct,
